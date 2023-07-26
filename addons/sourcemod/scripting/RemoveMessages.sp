@@ -68,7 +68,12 @@ static const char g_sBlockMsgs[][] =
     "#Chat_SavePlayer_Saved",
     "#Chat_SavePlayer_Spectator",
 	"#Cstrike_TitlesTXT_Game_teammate_attack",
-    "SendPlayerItemFound"
+    "SendPlayerItemFound",
+    "#Player_Cash_Award",
+    "#Team_Cash_Award",
+    "#Player_Point_Award",
+    "#Player_Team_Award",
+    "#Notice_Bonus",
 };
 
 public Plugin myinfo = 
