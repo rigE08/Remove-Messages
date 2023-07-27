@@ -84,6 +84,7 @@ static const char g_sBlockRadios[][] = {
     "#SFUI_TitlesTXT_Incendiary_in_the_hole",
     "#SFUI_TitlesTXT_Smoke_in_the_hole",
     "#SFUI_TitlesTXT_Decoy_in_the_hole",
+    //"#SFUI_TitlesTXT_Flashbang_in_the_hole",
 };
 
 public Plugin myinfo = 
@@ -126,7 +127,6 @@ public void OnPluginStart()
 
 public void OnConfigsExecuted()
 {
-	//FindConVar("sv_ignoregrenaderadio").IntValue = sm_removemessages_radio.IntValue;
     cvar = sm_removemessages_cvar.BoolValue;
     gametext = sm_removemessages_gametext.BoolValue;
     radio = sm_removemessages_radio.BoolValue;
@@ -193,7 +193,6 @@ public Action UserMsgText(UserMsg msg_id, Handle msg, const int[] players, int p
 
 public Action UserMsgRadio1(UserMsg msg_id, Handle pb, int[] players, int playersNum, bool reliable, bool init)
 {
-
     if(radio)
 	{
         static char buffer[64];
@@ -226,7 +225,7 @@ public Action OnTeam(Event event, const char[] name, bool dontBroadcast)
 	{
 		if(!event.GetBool("disconnect"))
 			event.SetBool("silent", true);
-	}	
+	}
 	return Plugin_Continue;
 }
 
