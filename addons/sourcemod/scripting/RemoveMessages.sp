@@ -63,8 +63,6 @@ static const char g_sBlockMsgs[][] =
     "#Team_Cash_Award_Bonus_Shorthanded",
     "#Team_Cash_Award_Loser_Bonus_Neg",
     "#Team_Cash_Award_no_income_suicide",
-    "#SFUI_Notice_Warmup_Has_Ended",
-    "#SFUI_Notice_Match_Will_Start_Chat",
     "#hostagerescuetime",
     "#Chat_SavePlayer_Savior",
     "#Chat_SavePlayer_Saved",
@@ -76,6 +74,16 @@ static const char g_sBlockMsgs[][] =
     "#Item_Traded",
     "#Item_FoundInCrate",
     "#SendPlayerItemFound",
+    "#SFUI_Notice_Warmup_Has_Ended",
+    "#SFUI_Notice_Match_Will_Start_Chat",
+};
+
+static const char g_sBlockRadios[][] = {
+    "#SFUI_TitlesTXT_Fire_in_the_hole",
+    "#SFUI_TitlesTXT_Molotov_in_the_hole",
+    "#SFUI_TitlesTXT_Incendiary_in_the_hole",
+    "#SFUI_TitlesTXT_Smoke_in_the_hole",
+    "#SFUI_TitlesTXT_Decoy_in_the_hole",
 };
 
 public Plugin myinfo = 
@@ -118,14 +126,14 @@ public void OnPluginStart()
 
 public void OnConfigsExecuted()
 {
-	FindConVar("sv_ignoregrenaderadio").IntValue = sm_removemessages_radio.IntValue;
-	cvar = sm_removemessages_cvar.BoolValue;
-	gametext = sm_removemessages_gametext.BoolValue;
-	radio = sm_removemessages_radio.BoolValue;
-	changeteam = sm_removemessages_changeteam.BoolValue;
-	changename = sm_removemessages_changename.BoolValue;
-	connect = sm_removemessages_connect.BoolValue;
-	disconnect = sm_removemessages_disconnect.BoolValue;
+	//FindConVar("sv_ignoregrenaderadio").IntValue = sm_removemessages_radio.IntValue;
+    cvar = sm_removemessages_cvar.BoolValue;
+    gametext = sm_removemessages_gametext.BoolValue;
+    radio = sm_removemessages_radio.BoolValue;
+    changeteam = sm_removemessages_changeteam.BoolValue;
+    changename = sm_removemessages_changename.BoolValue;
+    connect = sm_removemessages_connect.BoolValue;
+    disconnect = sm_removemessages_disconnect.BoolValue;
 }
 
 public void OnConVarChanged(ConVar convar, const char[] oldValue, const char[] newValue)
@@ -171,7 +179,7 @@ public Action UserMsgText(UserMsg msg_id, Handle msg, const int[] players, int p
 	{
         static char buffer[64];
         PbReadString(msg, "params", buffer, sizeof(buffer), 0);
-        
+
         for(int i = 0; i < sizeof(g_sBlockMsgs); ++i)
         {
             if(!strcmp(buffer, g_sBlockMsgs[i]))
@@ -185,7 +193,21 @@ public Action UserMsgText(UserMsg msg_id, Handle msg, const int[] players, int p
 
 public Action UserMsgRadio1(UserMsg msg_id, Handle pb, int[] players, int playersNum, bool reliable, bool init)
 {
-	return radio ? Plugin_Handled : Plugin_Continue;
+
+    if(radio)
+	{
+        static char buffer[64];
+        PbReadString(pb, "params", buffer, sizeof(buffer), 2);
+        PrintToServer("2- %s",buffer);
+        for(int i = 0; i < sizeof(g_sBlockRadios); ++i)
+        {
+            if(!strcmp(buffer, g_sBlockRadios[i]))
+            {
+                return Plugin_Handled;
+            }
+        }
+    }
+    return Plugin_Continue;
 }
 
 public Action SendPlayerItemFound(UserMsg msg_id, Handle pb, int[] players, int playersNum, bool reliable, bool init)
